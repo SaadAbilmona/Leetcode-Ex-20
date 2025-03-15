@@ -1,0 +1,54 @@
+#include <iostream>
+#include <stack>
+using namespace std;
+
+bool isValid(string s) {
+    stack<char> st; //using stacks as advised by Leetcode
+
+    //reading the string one by one 
+    for (int i = 0; i < s.length(); i++) {
+        char c = s[i];
+
+        //pushing open brackets into the stack
+        if (c == '(' || c == '{' || c == '[') {
+            st.push(c);
+        }
+
+        //if it's a closed bracket, we check for the presence of an open one before it. if there is none, then the string is false 
+        else if (c == ')' || c == '}' || c == ']') {
+            //if it's an empty stack, there is no closing
+            if (st.empty()) {
+                return false;
+            }
+
+            //get the last opening bracket
+            char top = st.top();
+            st.pop(); // Remove it from the stack
+
+            //checking the open bracket
+            if ((c == ')' && top != '(') ||
+                (c == '}' && top != '{') ||
+                (c == ']' && top != '[')) {
+                return false; 
+            }
+        }
+    }
+
+    //If the stack ends up emoty, everything is fine
+    return st.empty();
+}
+
+int main() {
+    string s;
+    cout << "Enter a string of brackets: ";
+    cin >> s;
+
+    if (isValid(s)) {
+        cout << "true" << endl;
+    }
+    else {
+        cout << "false" << endl;
+    }
+
+    return 0;
+}
